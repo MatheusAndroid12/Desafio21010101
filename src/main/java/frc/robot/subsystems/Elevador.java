@@ -29,10 +29,10 @@ public class Elevador extends SubsystemBase {
 
     private double target = 0;
     private double maxspeed = 0.3;
-    private double speed = 0;
+    private double speed = 0.3;
 
     public Elevador() {
-        pidControllerElevador.setTolerance(0.5);
+        pidControllerElevador.setTolerance(0.2);
 
         SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake);
@@ -47,19 +47,46 @@ public class Elevador extends SubsystemBase {
         SmartDashboard.putData("Reset Encoders", new InstantCommand(() -> {
             masterEncoder.setPosition(0);
             slaveEncoder.setPosition(0);
+
+            var motorMasterconfig = new SparkMaxConfig();
+
+            motorMasterconfig.inverted(false);
+            motorMasterconfig.idleMode(IdleMode.kBrake);
+            motorMasterconfig.disableFollowerMode();
+        
+            elevatorMaster.configure(motorMasterconfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+            
+            var slaveMotorconfig = new SparkMaxConfig();
+        
+            slaveMotorconfig.idleMode(IdleMode.kBrake);
+            slaveMotorconfig.disableFollowerMode();
+            slaveMotorconfig.inverted(false);
+            
+            elevatorSlave.configure(slaveMotorconfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
         }));
     }
 
+    public void run(double speed){
+        elevatorMaster.set(speed);
+        elevatorSlave.set(-speed);
+      }
+
     public void levantagem(double controlePos) {
-        elevatorMaster.set(-speed);
-        elevatorSlave.set(speed);
+        elevatorMaster.set(speed);
+        elevatorSlave.set(-speed);
     }
 
     public void elevatorPIDMove(double target) {
         pidControllerElevador.setSetpoint(target);
-        double speed = MathUtil.clamp(pidControllerElevador.calculate(getHeight()), -maxspeed, maxspeed);
+    
+        double pidOutput = pidControllerElevador.calculate(getHeight());
+        speed = MathUtil.clamp(pidOutput, -maxspeed, maxspeed);
+    
+        speed = MathUtil.clamp(speed, -0.4, maxspeed);
+    
         levantagem(speed);
     }
+    
 
     public void setTarget(double target) {
         this.target = target;
@@ -78,7 +105,7 @@ public class Elevador extends SubsystemBase {
     }
 
     private double ticksToMeters(double ticks) {
-        return ticks * 0.00003451453;
+        return ticks * 0.50107266;
     }
 
     @Override
@@ -87,8 +114,8 @@ public class Elevador extends SubsystemBase {
         elevatorPIDMove(target);
         SmartDashboard.putNumber("Elevator Height", getHeight());
         SmartDashboard.putBoolean("in the setpoint", pidControllerElevador.atSetpoint());
-        SmartDashboard.putNumber("elevator setpoint", pidControllerElevador.getSetpoint());
-        SmartDashboard.putNumber("LeftPower", -elevatorMaster.get());
-        SmartDashboard.putNumber("RightPower", elevatorSlave.get());
+SmartDashboard.putNumber("elevator setpoint", pidControllerElevador.getSetpoint());
+        SmartDashboard.putNumber("LeftPower", elevatorMaster.get());
+        SmartDashboard.putNumber("RightPower", -elevatorSlave.get());
     }
 }

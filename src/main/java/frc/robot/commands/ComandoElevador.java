@@ -20,9 +20,9 @@ public class ComandoElevador extends Command {
     public void execute() {
         switch (controller.getPOV()) {
             case 0 -> elevador.setTarget(0);
-            case 180 -> elevador.setTarget(200);
-            case 90 -> elevador.setTarget(300);
-            case 270 -> elevador.setTarget(450);
+            case 180 -> elevador.setTarget(9);
+            case 90 -> elevador.setTarget(15);
+            case 270 -> elevador.setTarget(18);
             }  elevador.elevatorPIDMove(elevador.getTarget());
         }
 
