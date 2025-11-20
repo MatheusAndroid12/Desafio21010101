@@ -3,7 +3,7 @@ package frc.robot;
 import frc.robot.commands.ComandoDriveTrain;
 import frc.robot.commands.ComandoShooter;
 import frc.robot.commands.ComandoShooterNegativo;
-import frc.robot.commands.PIDAuto;
+import frc.robot.commands.CoralAutonomo;
 import frc.robot.commands.ComandoElevador;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -37,6 +37,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PIDAuto(drivetrain);
+        return new CoralAutonomo(drivetrain, elevador, shooter);
     }
+    
 }
