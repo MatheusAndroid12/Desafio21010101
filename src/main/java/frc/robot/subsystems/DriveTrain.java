@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
 
-  //Definindo Motores
   public static final int KrightMaster = 4;
   public static final int KrightSlave = 2;
   public static final int KleftMaster = 3;
@@ -25,9 +24,7 @@ public class DriveTrain extends SubsystemBase {
   private final WPI_TalonSRX leftSlave = new WPI_TalonSRX(KleftSlave);
 
   private final DifferentialDrive diffDrive = new DifferentialDrive(leftMaster, rightMaster);
-  //Definindo Motores
 
-  //Simulação
   private final Field2d m_field = new Field2d();
 
   private final DifferentialDrivetrainSim m_driveSim =
@@ -42,8 +39,6 @@ public class DriveTrain extends SubsystemBase {
 
   private double leftVoltage = 0;
   private double rightVoltage = 0;
-
-  //Simulação
   
   public DriveTrain() {
 
@@ -61,7 +56,6 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putData("Field", m_field);
 }
 
-  //Encoder
   public double getLeftPosition(){
     return leftMaster.getSelectedSensorPosition();
   }
@@ -77,9 +71,7 @@ public class DriveTrain extends SubsystemBase {
   public double getAvaregePosition(){
     return (ticksToCentimeters(getLeftPosition())+ticksToCentimeters(getRightPosition()))/2;
   }
-  //Encoder
 
-  //PID
   PIDController pidController = new PIDController(0.1, 0, 0);
   
   public void autoMove(double setpoint){
@@ -87,12 +79,6 @@ public class DriveTrain extends SubsystemBase {
     double speed = pidController.calculate(getAvaregePosition());
     drive(speed, 0);
   }
-
-  public void resetPosition(){
-    leftMaster.setSelectedSensorPosition(0);
-    rightMaster.setSelectedSensorPosition(0);
-  }
-  //PID
 
   public void drive(double speed, double rotation) {
     diffDrive.arcadeDrive(speed, rotation);
@@ -123,6 +109,18 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-    throw new UnsupportedOperationException("Unimplemented method 'isAtSetpoint'");
+    return Math.abs(pidController.getSetpoint() - getAvaregePosition()) < 2;
   }
+
+  public void AutoMove(double setpoint){
+    pidController.setSetpoint(setpoint);
+    double speed = pidController.calculate(getAvaregePosition());
+    drive(speed, 0);
+  }
+
+  public void resetPosition(){
+    leftMaster.setSelectedSensorPosition(0);
+    rightMaster.setSelectedSensorPosition(0);
+  }
+
 }

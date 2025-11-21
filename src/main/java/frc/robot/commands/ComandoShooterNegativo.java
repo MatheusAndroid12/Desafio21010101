@@ -17,7 +17,7 @@ public class ComandoShooterNegativo extends Command {
 
     @Override
     public void execute(){
-        shooter.run(-0.5);
+        shooter.run(-1);
 
     }
     @Override

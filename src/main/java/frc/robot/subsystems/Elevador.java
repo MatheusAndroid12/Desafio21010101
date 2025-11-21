@@ -30,6 +30,7 @@ public class Elevador extends SubsystemBase {
     private double target = 0;
     private double maxspeed = 0.3;
     private double speed = 0.3;
+    private double maxDown = 0.15;
 
     public Elevador() {
         pidControllerElevador.setTolerance(0.2);
@@ -78,11 +79,16 @@ public class Elevador extends SubsystemBase {
 
     public void elevatorPIDMove(double target) {
         pidControllerElevador.setSetpoint(target);
-    
+
         double pidOutput = pidControllerElevador.calculate(getHeight());
         speed = MathUtil.clamp(pidOutput, -maxspeed, maxspeed);
     
-        speed = MathUtil.clamp(speed, -0.4, maxspeed);
+        maxspeed = SmartDashboard.getNumber("Velocidade Máxima Elevador", maxspeed);
+        maxDown = SmartDashboard.getNumber("Velocidade Máxima Descendo", maxDown);
+    
+        if (speed < 0) {
+            speed = MathUtil.clamp(speed, -maxDown, 0);
+        }
     
         levantagem(speed);
     }
@@ -110,7 +116,7 @@ public class Elevador extends SubsystemBase {
 
     @Override
     public void periodic() {
-        maxspeed = SmartDashboard.getNumber("Velocidade Máxima Elevador", 0.3);
+maxspeed = SmartDashboard.getNumber("Velocidade Máxima Elevador", 0.3);
         elevatorPIDMove(target);
         SmartDashboard.putNumber("Elevator Height", getHeight());
         SmartDashboard.putBoolean("in the setpoint", pidControllerElevador.atSetpoint());
