@@ -38,7 +38,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AutoPID(drivetrain);  
+        return new AutoPID(drivetrain,elevador,shooter);  
       }
     
 }
