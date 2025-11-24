@@ -24,7 +24,7 @@ public class AutoMovePID extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    driveTrain.drive(0, 0);
+    driveTrain.drive(1, 0);
   }
 
   @Override
