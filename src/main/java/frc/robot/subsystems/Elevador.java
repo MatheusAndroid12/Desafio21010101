@@ -67,10 +67,15 @@ public class Elevador extends SubsystemBase {
         }));
     }
 
+    public void resetEncoders() {
+        masterEncoder.setPosition(0);
+        slaveEncoder.setPosition(0);
+    }
+
     public void run(double speed){
         elevatorMaster.set(speed);
         elevatorSlave.set(-speed);
-      }
+    }
 
     public void levantagem(double controlePos) {
         elevatorMaster.set(speed);
@@ -93,7 +98,6 @@ public class Elevador extends SubsystemBase {
         levantagem(speed);
     }
     
-
     public void setTarget(double target) {
         this.target = target;
     }
@@ -116,11 +120,11 @@ public class Elevador extends SubsystemBase {
 
     @Override
     public void periodic() {
-maxspeed = SmartDashboard.getNumber("Velocidade Máxima Elevador", 0.3);
+        maxspeed = SmartDashboard.getNumber("Velocidade Máxima Elevador", 0.3);
         elevatorPIDMove(target);
         SmartDashboard.putNumber("Elevator Height", getHeight());
         SmartDashboard.putBoolean("in the setpoint", pidControllerElevador.atSetpoint());
-SmartDashboard.putNumber("elevator setpoint", pidControllerElevador.getSetpoint());
+        SmartDashboard.putNumber("elevator setpoint", pidControllerElevador.getSetpoint());
         SmartDashboard.putNumber("LeftPower", elevatorMaster.get());
         SmartDashboard.putNumber("RightPower", -elevatorSlave.get());
     }

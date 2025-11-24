@@ -16,7 +16,8 @@ public class AutoSubida extends Command {
 
     @Override
     public void initialize() {
-        elevador.setTarget(target);
+        elevador.resetEncoders();   
+        elevador.setTarget(target); 
     }
 
     @Override
