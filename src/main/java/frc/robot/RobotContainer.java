@@ -5,6 +5,7 @@ import frc.robot.commands.AutoPID;
 import frc.robot.commands.ComandoDriveTrain;
 import frc.robot.commands.ComandoShooter;
 import frc.robot.commands.ComandoShooterNegativo;
+import frc.robot.commands.TestAuto;
 import frc.robot.commands.ComandoElevador;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -39,6 +40,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AutoMovePID(drivetrain, -100, -100);
+        return new AutoMovePID(drivetrain, 100);
       }
 }

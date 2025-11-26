@@ -42,7 +42,7 @@ public class DriveTrain extends SubsystemBase {
   private double leftVoltage = 0;
   private double rightVoltage = 0;
   
-  PIDController pidController = new PIDController(0.03, 0, 0);
+  PIDController pidController = new PIDController(0.05, 0, 0);
 
 
   public DriveTrain() {
@@ -51,7 +51,6 @@ public class DriveTrain extends SubsystemBase {
     rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 20);
     rightMaster.setSensorPhase(true);
     
-
     rightSlave.follow(rightMaster);
     leftSlave.follow(leftMaster);
 
@@ -62,7 +61,7 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putData("Field", m_field);
 
-    pidController.setTolerance(0.05);
+    pidController.setTolerance(10);
 
     resetPosition();
 }
@@ -84,21 +83,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   
-  public void autoMove(double setpointLeft, double setpointRight){
-    pidController.setSetpoint(setpointLeft);
-    double speed = MathUtil.clamp(pidController.calculate(getAvaregePosition()), -0.5, 0.5);
-    drive(speed, 0);
-    // diffDrive.tankDrive(speed, speed);
-
-    // pidController.setSetpoint(setpointRight);
-    // double speedRight = pidController.calculate(getRightPosition());
-    // drive(speedRight, 0);
+  public void autoMove(double setpoint){
+    pidController.setSetpoint(setpoint);
+    double speed = pidController.calculate(getAvaregePosition());
+    drive(-speed, 0);
 
     SmartDashboard.putNumber("speed", speed);
-    SmartDashboard.putNumber("SetPoint", setpointLeft);
-    // SmartDashboard.putNumber("speed", speedRight);
-    // SmartDashboard.putNumber("SetPoint", setpointRight);
+    SmartDashboard.putNumber("SetPoint", setpoint);
   }
+
 
   public void drive(double speed, double rotation) {
     diffDrive.arcadeDrive(speed, rotation);
