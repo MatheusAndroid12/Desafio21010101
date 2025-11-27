@@ -17,7 +17,7 @@ public class ComandoDriveTrain extends Command {
     public void initialize(){}
 
     public void execute(){
-        drivetrain.drive(controller.getZ(), controller.getY());
+        drivetrain.drive(controller.getY(), controller.getZ());
     }   
 
     public void end(boolean interrupted){}

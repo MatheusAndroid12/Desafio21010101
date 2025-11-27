@@ -5,11 +5,12 @@ import frc.robot.subsystems.DriveTrain;
 
 public class AutoMovePID extends Command {
   DriveTrain driveTrain;
-  double distancia;
+  double setpoint;
 
-  public AutoMovePID(DriveTrain driveTrain, double distancia) {
+  public AutoMovePID(DriveTrain driveTrain, double setpoint) {
     this.driveTrain = driveTrain;
-    this.distancia = distancia;
+    this.setpoint = setpoint;
+    addRequirements(driveTrain);
   }
 
   @Override
@@ -19,12 +20,12 @@ public class AutoMovePID extends Command {
 
   @Override
   public void execute() {
-    driveTrain.autoMove(distancia);
+    driveTrain.autoMove(setpoint);
   }
 
   @Override
   public void end(boolean interrupted) {
-    driveTrain.drive(1, 0);
+    driveTrain.drive(0, 0);
   }
 
   @Override

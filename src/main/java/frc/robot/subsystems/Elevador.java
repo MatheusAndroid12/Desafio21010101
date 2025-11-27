@@ -43,11 +43,12 @@ public class Elevador extends SubsystemBase {
         masterEncoder = elevatorMaster.getEncoder();
         slaveEncoder = elevatorSlave.getEncoder();
 
-        SmartDashboard.putNumber("Target", target);
-        SmartDashboard.putNumber("Velocidade Máxima Elevador", maxspeed);
+        // SmartDashboard.putNumber("Target", target);
+        // SmartDashboard.putNumber("Velocidade Máxima Elevador", maxspeed);
         SmartDashboard.putData("Reset Encoders", new InstantCommand(() -> {
             masterEncoder.setPosition(0);
             slaveEncoder.setPosition(0);
+
 
             var motorMasterconfig = new SparkMaxConfig();
 
@@ -64,7 +65,8 @@ public class Elevador extends SubsystemBase {
             slaveMotorconfig.inverted(false);
             
             elevatorSlave.configure(slaveMotorconfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-        }));
+    }));
+
     }
 
     public void resetEncoders() {
