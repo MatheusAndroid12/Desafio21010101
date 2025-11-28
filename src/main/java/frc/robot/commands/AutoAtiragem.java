@@ -24,7 +24,7 @@ public class AutoAtiragem extends Command {
 
     @Override
     public void execute() {
-        shooter.run(1.0); 
+        shooter.run(-1.0); 
     }
 
     @Override

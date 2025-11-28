@@ -2,9 +2,11 @@ package frc.robot;
 
 import frc.robot.commands.AutoMovePID;
 import frc.robot.commands.AutoPID;
+import frc.robot.commands.AutoSubida;
 import frc.robot.commands.ComandoDriveTrain;
 import frc.robot.commands.ComandoShooter;
 import frc.robot.commands.ComandoShooterNegativo;
+import frc.robot.commands.SubirManual;
 import frc.robot.commands.ComandoElevador;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -30,7 +32,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         drivetrain.setDefaultCommand(new ComandoDriveTrain(controller, drivetrain));
-        elevador.setDefaultCommand(new ComandoElevador(elevador, controller, 0));
+        elevador.setDefaultCommand(new SubirManual(elevador, controller));
         
 
 
@@ -39,6 +41,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AutoMovePID(drivetrain, 100);
+        return new AutoSubida(elevador, 6.8);
       }
 }

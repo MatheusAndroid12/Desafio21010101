@@ -25,7 +25,7 @@ public class Elevador extends SubsystemBase {
     private final RelativeEncoder masterEncoder;
     private final RelativeEncoder slaveEncoder;
 
-    public final PIDController pidControllerElevador = new PIDController(0.05, 0, 0);
+    public final PIDController pidControllerElevador = new PIDController(0.9, 0, 0);
 
     private double target = 0;
     private double maxspeed = 0.3;
@@ -87,15 +87,16 @@ public class Elevador extends SubsystemBase {
     public void elevatorPIDMove(double target) {
         pidControllerElevador.setSetpoint(target);
 
-        double pidOutput = pidControllerElevador.calculate(getHeight());
-        speed = MathUtil.clamp(pidOutput, -maxspeed, maxspeed);
-    
         maxspeed = SmartDashboard.getNumber("Velocidade Máxima Elevador", maxspeed);
         maxDown = SmartDashboard.getNumber("Velocidade Máxima Descendo", maxDown);
+
+        double pidOutput = pidControllerElevador.calculate(getHeight());
+        speed = MathUtil.clamp(pidOutput, -maxDown, maxspeed);
     
-        if (speed < 0) {
-            speed = MathUtil.clamp(speed, -maxDown, 0);
-        }
+    
+        // if (speed < 0) {
+        //     speed = MathUtil.clamp(speed, -maxDown, 0);
+        // }
     
         levantagem(speed);
     }
