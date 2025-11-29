@@ -11,9 +11,9 @@ public class AutoPID extends SequentialCommandGroup {
 
         addCommands(
             new AutoMovePID(drivetrain, 150),       
-            new AutoSubida(elevador, 11),      
-            new AutoAtiragem(shooter, 1.0)
-            //new AutoSubida(elevador, 0)       
+            new AutoSubida(elevador, 11 ),      
+            new AutoAtiragem(shooter, 1.0),
+            new AutoSubida(elevador, 0)       
         );
     }
 }

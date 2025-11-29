@@ -25,15 +25,15 @@ public class Elevador extends SubsystemBase {
     private final RelativeEncoder masterEncoder;
     private final RelativeEncoder slaveEncoder;
 
-    public final PIDController pidControllerElevador = new PIDController(0.9, 0, 0);
+    public final PIDController pidControllerElevador = new PIDController(0.5, 0, 0);
 
     private double target = 0;
-    private double maxspeed = 0.3;
+    private double maxspeed = 0.5;
     private double speed = 0.3;
     private double maxDown = 0.15;
 
     public Elevador() {
-        pidControllerElevador.setTolerance(0.2);
+        pidControllerElevador.setTolerance(0.4);
 
         SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake);
@@ -65,7 +65,12 @@ public class Elevador extends SubsystemBase {
             slaveMotorconfig.inverted(false);
             
             elevatorSlave.configure(slaveMotorconfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
+            resetEncoders();
     }));
+
+
+    resetEncoders();
 
     }
 

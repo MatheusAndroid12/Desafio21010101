@@ -15,8 +15,7 @@ public class AutoSubida extends Command {
     }
 
     @Override
-    public void initialize() {
-        elevador.resetEncoders();   
+    public void initialize() {   
         elevador.setTarget(target); 
     }
 
@@ -28,5 +27,7 @@ public class AutoSubida extends Command {
     @Override
     public void end(boolean interrupted) {
         elevador.levantagem(0);
+
+        
     }
 }

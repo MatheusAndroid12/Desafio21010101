@@ -86,7 +86,7 @@ public class DriveTrain extends SubsystemBase {
     resetPosition();
 
     // Limita a velocidade máxima do arcade drive
-    diffDrive.setMaxOutput(0.6);
+    diffDrive.setMaxOutput(0.7);
   }
 
   // Métodos de sensores

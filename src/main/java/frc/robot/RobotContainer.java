@@ -32,7 +32,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         drivetrain.setDefaultCommand(new ComandoDriveTrain(controller, drivetrain));
-        elevador.setDefaultCommand(new SubirManual(elevador, controller));
+        elevador.setDefaultCommand(new ComandoElevador(elevador, controller, 0));
         
 
 
@@ -41,6 +41,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AutoSubida(elevador, 6.8);
+        return new AutoPID(drivetrain, elevador, shooter);
       }
 }
